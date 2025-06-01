@@ -1,321 +1,227 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Motivational Quote Generator</title>
-  <style>
-    body {
-      background-color: #ffffff;
-      color: #000000;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-
-    .container {
-      width: 90%;
-      max-width: 600px;
-      background-color: #f8f8f8;
-      border-radius: 16px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-      padding: 40px;
-      box-sizing: border-box;
-      text-align: center;
-    }
-
-    h1 {
-      font-size: 28px;
-      margin-bottom: 25px;
-      letter-spacing: 1px;
-    }
-
-    textarea {
-      width: 100%;
-      height: 120px;
-      font-size: 18px;
-      padding: 15px;
-      border-radius: 12px;
-      border: 2px solid #000;
-      resize: none;
-      margin-bottom: 20px;
-      transition: all 0.3s ease;
-    }
-
-    textarea:focus {
-      outline: none;
-      border-color: #333;
-      box-shadow: 0 0 5px #333;
-    }
-
-    .buttons {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    select,
-    button {
-      padding: 10px 15px;
-      border: none;
-      border-radius: 12px;
-      font-size: 16px;
-      cursor: pointer;
-      background-color: #000;
-      color: #fff;
-      transition: background-color 0.3s ease;
-    }
-
-    select:hover,
-    button:hover {
-      background-color: #333;
-    }
-
-    .fade {
-      animation: fadeIn 0.6s ease-in-out;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>Motivational Quote Generator</h1>
-    <textarea id="quoteBox" readonly></textarea>
-    <div class="buttons">
-      <select id="categorySelector">
-        <option value="all">All</option>
-        <option value="dinero">Money</option>
-        <option value="amor">Love</option>
-        <option value="futbol">Football</option>
-        <option value="vida">Life</option>
-      </select>
-      <select id="languageSelector">
-        <option value="en">English</option>
-        <option value="es">Español</option>
-      </select>
-      <button onclick="generateQuote()">Generate</button>
-    </div>
-  </div>
-
-  <script>
-    const quotes = {
-      en: {
-        dinero: [
-          "Money is a tool, not the goal.",
-          "Invest in yourself first.",
-          "Wealth is built daily.",
-          "Budgeting builds discipline.",
-          "Make money work for you.",
-          "Time is more valuable than money.",
-          "Saving is earning.",
-          "Smart spending is smart living.",
-          "Richness is in mindset.",
-          "Don't chase money, attract it.",
-          "Be the boss of your wallet.",
-          "Every coin counts.",
-          "Don't buy, invest.",
-          "Abundance starts in the mind.",
-          "You can earn more, always.",
-          "Passive income is power.",
-          "Don't just earn, grow.",
-          "Your value creates your income.",
-          "Track your money to control it.",
-          "Plant money, harvest freedom."
-        ],
-        amor: [
-          "Love is the greatest power.",
-          "Let your heart lead the way.",
-          "True love needs no words.",
-          "Love yourself first.",
-          "Love is not owned, it’s shared.",
-          "Kindness is love in motion.",
-          "Real love never fades.",
-          "Love listens, not just speaks.",
-          "Love without expectations.",
-          "In love, little things matter.",
-          "Be love, not just in love.",
-          "Love grows with patience.",
-          "Respect is part of love.",
-          "True love empowers you.",
-          "Every heart has a soulmate.",
-          "Show love through actions.",
-          "Love builds, never breaks.",
-          "You are loved, always.",
-          "Love is giving, not keeping.",
-          "Choose love every day."
-        ],
-        futbol: [
-          "Play with heart, not just feet.",
-          "Every goal starts with a dream.",
-          "Defeat teaches more than victory.",
-          "Train hard, win easy.",
-          "One team, one dream.",
-          "Football is passion in motion.",
-          "Pass the ball, share the glory.",
-          "Champions rise after failure.",
-          "Defense wins games too.",
-          "Respect the game and players.",
-          "Sweat earns success.",
-          "Believe in your boots.",
-          "Football unites the world.",
-          "Every match is a lesson.",
-          "Teamwork makes the dream work.",
-          "Chase the ball, not the fame.",
-          "Football is joy, not war.",
-          "Score with spirit.",
-          "Fall, rise, repeat.",
-          "Legends never stop playing."
-        ],
-        vida: [
-          "Life is what you make of it.",
-          "Live now, not later.",
-          "Every day is a new chance.",
-          "Breathe and begin again.",
-          "Your life, your rules.",
-          "Growth is part of life.",
-          "The present is your gift.",
-          "Smile, life smiles back.",
-          "Fail forward always.",
-          "Create your path.",
-          "Life begins at discomfort.",
-          "Change is a teacher.",
-          "You are your story.",
-          "Life rewards the brave.",
-          "Live with intention.",
-          "Don't survive, thrive.",
-          "Happiness is a habit.",
-          "Dreams demand action.",
-          "Today is the day.",
-          "Progress is life’s goal."
-        ]
-      },
-      es: {
-        dinero: [
-          "El dinero es una herramienta, no la meta.",
-          "Invierte primero en ti.",
-          "La riqueza se construye día a día.",
-          "Ahorrar es ganar.",
-          "Haz que el dinero trabaje para ti.",
-          "El tiempo vale más que el dinero.",
-          "Gasta con inteligencia.",
-          "La abundancia comienza en la mente.",
-          "El valor crea ingresos.",
-          "Riqueza no es lo que tienes, es cómo vives.",
-          "Cada moneda cuenta.",
-          "El dinero sigue a la pasión.",
-          "Multiplica, no acumules.",
-          "Sé dueño de tu cartera.",
-          "No compres, invierte.",
-          "Ingresos pasivos, libertad activa.",
-          "Sigue aprendiendo para ganar más.",
-          "Controla tu dinero o te controlará.",
-          "Gana, ahorra, invierte.",
-          "Planta dinero y cosecha libertad."
-        ],
-        amor: [
-          "El amor es el poder más grande.",
-          "Ama sin condiciones.",
-          "El amor propio es esencial.",
-          "Escuchar también es amar.",
-          "El amor crece con el respeto.",
-          "Pequeños gestos, gran amor.",
-          "Amar es cuidar.",
-          "El amor real no se impone.",
-          "Da amor sin esperar.",
-          "El amor no duele, sana.",
-          "Ama con acciones, no solo palabras.",
-          "El verdadero amor no se rinde.",
-          "La paciencia es clave en el amor.",
-          "El amor se construye.",
-          "Ama tu vida primero.",
-          "Amar es libertad, no prisión.",
-          "Eres digno de amor.",
-          "El amor transforma.",
-          "Cuida a quien amas.",
-          "Elige el amor cada día."
-        ],
-        futbol: [
-          "Juega con el corazón.",
-          "Cada gol empieza con un sueño.",
-          "Pierde con honor, gana con humildad.",
-          "Entrena como si jugaras.",
-          "Un equipo, un objetivo.",
-          "El fútbol es pasión.",
-          "Pasa el balón, comparte la gloria.",
-          "La derrota enseña más que la victoria.",
-          "Respeta al rival.",
-          "Corre por tu escudo.",
-          "Cree en tus botas.",
-          "Sudor hoy, gloria mañana.",
-          "Defender también es arte.",
-          "El fútbol une naciones.",
-          "Aprende de cada partido.",
-          "La pasión no se compra.",
-          "El fútbol se juega con alma.",
-          "Sigue la jugada, no la fama.",
-          "Golpea con decisión.",
-          "Juega siempre como si fuera la final."
-        ],
-        vida: [
-          "La vida es lo que haces de ella.",
-          "Vive el ahora.",
-          "Cada día es una nueva oportunidad.",
-          "Respira, sigue adelante.",
-          "Tu vida, tus reglas.",
-          "Cambia y crece.",
-          "La sonrisa abre caminos.",
-          "Cae siete veces, levántate ocho.",
-          "Haz lo que te apasiona.",
-          "Cree en tu camino.",
-          "La vida premia a los valientes.",
-          "Sé dueño de tu historia.",
-          "El presente es tuyo.",
-          "No solo existas, vive.",
-          "Los errores son maestros.",
-          "Hazlo con amor o no lo hagas.",
-          "Progreso, no perfección.",
-          "Vivir es decidir.",
-          "Hoy es el mejor día.",
-          "Tu actitud cambia tu vida."
-        ]
-      }
-    };
-
-    function generateQuote() {
-      const language = document.getElementById("languageSelector").value;
-      const category = document.getElementById("categorySelector").value;
-      const quoteBox = document.getElementById("quoteBox");
-
-      let availableQuotes = [];
-
-      if (category === "all") {
-        for (const key in quotes[language]) {
-          availableQuotes = availableQuotes.concat(quotes[language][key]);
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FocusHub Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: white;
+            color: black;
+            margin: 0;
+            padding: 0;
         }
-      } else {
-        availableQuotes = quotes[language][category] || [];
-      }
 
-      if (availableQuotes.length > 0) {
-        const randomIndex = Math.floor(Math.random() * availableQuotes.length);
-        quoteBox.value = availableQuotes[randomIndex];
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+        }
 
-        // Activar animación
-        quoteBox.classList.remove("fade");
-        void quoteBox.offsetWidth;
-        quoteBox.classList.add("fade");
-      } else {
-        quoteBox.value = "No quotes available.";
-      }
-    }
-  </script>
+        .container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .adsense {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .form-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .input-box {
+            padding: 10px;
+            width: 200px;
+            font-size: 16px;
+            border: 2px solid black;
+            background-color: #f7f7f7;
+        }
+
+        .button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            background-color: black;
+            color: white;
+        }
+
+        .button:hover {
+            background-color: #444;
+        }
+
+        .filter-container {
+            margin-top: 20px;
+        }
+
+        .filter-select {
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid black;
+            background-color: #f7f7f7;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>FocusHub Generator</h1>
+    </header>
+
+    <!-- Anuncio de Google AdSense -->
+    <div class="adsense">
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7940385081543196" crossorigin="anonymous"></script>
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7940385081543196" data-ad-slot="3810137470" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+
+    <div class="container">
+        <div>
+            <input type="text" id="quote" class="input-box" placeholder="Your motivational quote will appear here..." readonly />
+        </div>
+        <div class="form-container">
+            <button class="button" id="generateBtn">Generate</button>
+            <select class="filter-select" id="themeFilter">
+                <option value="money">Money</option>
+                <option value="love">Love</option>
+                <option value="football">Football</option>
+                <option value="life">Life</option>
+            </select>
+            <select class="filter-select" id="languageSelect">
+                <option value="en">English</option>
+                <option value="es">Español</option>
+            </select>
+        </div>
+    </div>
+
+    <script>
+        // Frases motivadoras predefinidas
+        const quotes = {
+            en: {
+                money: [
+                    "Money is not the key to happiness, but it’s a key to many doors.",
+                    "The more you learn, the more you earn.",
+                    "Wealth consists not in having great possessions, but in having few wants.",
+                    "Success is not the key to happiness. Happiness is the key to success.",
+                    "Money is a great servant but a bad master.",
+                    "Wealth is the ability to fully experience life.",
+                    "The lack of money is the root of all evil.",
+                    "An investment in knowledge pays the best interest.",
+                    "A penny saved is a penny earned.",
+                    "When you have money, think about the people who don’t have it."
+                ],
+                love: [
+                    "Love is all you need.",
+                    "Where there is love, there is life.",
+                    "True love is eternal, infinite and always like itself.",
+                    "The best thing to hold onto in life is each other.",
+                    "Love is not something you look for. Love is something you become.",
+                    "You don’t love someone because they’re perfect. You love them in spite of the fact that they’re not.",
+                    "Love is the only reality, and it is not a mere sentiment. It is the ultimate truth that lies at the heart of creation.",
+                    "Love yourself first and everything else falls into line.",
+                    "The greatest thing you’ll ever learn is just to love and be loved in return.",
+                    "Love makes the world go round."
+                ],
+                football: [
+                    "The greatest glory in living lies not in never falling, but in rising every time we fall.",
+                    "Success is no accident.",
+                    "You miss 100% of the shots you don’t take.",
+                    "It’s not whether you get knocked down, it’s whether you get up.",
+                    "The only way to prove that you’re a good sport is to lose.",
+                    "Football is not just a game; it’s a way of life.",
+                    "A champion is someone who gets up when he can’t.",
+                    "Success is not final, failure is not fatal: It is the courage to continue that counts.",
+                    "The difference between a successful person and others is not a lack of strength, not a lack of knowledge, but rather a lack in will.",
+                    "Football is the beautiful game."
+                ],
+                life: [
+                    "The purpose of life is not to be happy, it is to be useful.",
+                    "In the end, it’s not the years in your life that count, it’s the life in your years.",
+                    "Don’t count the days, make the days count.",
+                    "Your time is limited, don’t waste it living someone else’s life.",
+                    "Life is what happens when you’re busy making other plans.",
+                    "To live is the rarest thing in the world. Most people exist, that is all.",
+                    "Be yourself; everyone else is already taken.",
+                    "Life isn’t about waiting for the storm to pass, it’s about learning to dance in the rain.",
+                    "The journey of a thousand miles begins with one step.",
+                    "Success is not the key to happiness. Happiness is the key to success."
+                ]
+            },
+            es: {
+                money: [
+                    "El dinero no es la clave de la felicidad, pero es la clave de muchas puertas.",
+                    "Cuanto más aprendas, más ganarás.",
+                    "La riqueza no consiste en tener grandes posesiones, sino en tener pocos deseos.",
+                    "El éxito no es la clave de la felicidad. La felicidad es la clave del éxito.",
+                    "El dinero es un gran servidor pero un mal amo.",
+                    "La riqueza es la capacidad de experimentar la vida plenamente.",
+                    "La falta de dinero es la raíz de todo mal.",
+                    "Una inversión en conocimiento paga los mejores intereses.",
+                    "Un centavo ahorrado es un centavo ganado.",
+                    "Cuando tienes dinero, piensa en las personas que no lo tienen."
+                ],
+                love: [
+                    "El amor es todo lo que necesitas.",
+                    "Donde hay amor, hay vida.",
+                    "El amor verdadero es eterno, infinito y siempre igual a sí mismo.",
+                    "La mejor cosa que puedes tener en la vida es estar con los demás.",
+                    "El amor no es algo que buscas. El amor es algo que te conviertes.",
+                    "No amas a alguien porque sea perfecto. Los amas a pesar de que no lo son.",
+                    "El amor es la única realidad, y no es un simple sentimiento. Es la verdad última que se encuentra en el corazón de la creación.",
+                    "Amarte a ti mismo primero y todo lo demás encajará.",
+                    "Lo más grande que aprenderás es simplemente amar y ser amado a cambio.",
+                    "El amor hace girar el mundo."
+                ],
+                football: [
+                    "La mayor gloria en vivir no reside en no caer nunca, sino en levantarnos cada vez que caemos.",
+                    "El éxito no es un accidente.",
+                    "Fallaste el 100% de los tiros que no tomaste.",
+                    "No importa si te caes, lo que importa es si te levantas.",
+                    "La única forma de demostrar que eres un buen deportista es perder.",
+                    "El fútbol no es solo un juego, es un estilo de vida.",
+                    "Un campeón es alguien que se levanta cuando no puede.",
+                    "El éxito no es definitivo, el fracaso no es fatal: lo que cuenta es el coraje para continuar.",
+                    "La diferencia entre una persona exitosa y las demás no es la falta de fuerza, ni la falta de conocimiento, sino la falta de voluntad.",
+                    "El fútbol es el juego más bonito."
+                ],
+                life: [
+                    "El propósito de la vida no es ser feliz, es ser útil.",
+                    "Al final, no son los años de tu vida lo que cuenta, sino la vida en tus años.",
+                    "No cuentes los días, haz que los días cuenten.",
+                    "Tu tiempo es limitado, no lo desperdicies viviendo la vida de otra persona.",
+                    "La vida es lo que pasa mientras estás ocupado haciendo otros planes.",
+                    "Vivir es la cosa más rara del mundo. La mayoría de la gente solo existe.",
+                    "Sé tú mismo; los demás ya están tomados.",
+                    "La vida no trata de esperar a que pase la tormenta, sino de aprender a bailar bajo la lluvia.",
+                    "El viaje de mil millas comienza con un solo paso.",
+                    "El éxito no es la clave de la felicidad. La felicidad es la clave del éxito."
+                ]
+            }
+        };
+
+        // Función para generar una frase aleatoria
+        function generateQuote() {
+            const theme = document.getElementById('themeFilter').value;
+            const language = document.getElementById('languageSelect').value;
+
+            const quotesArray = quotes[language][theme];
+            const randomQuote = quotesArray[Math.floor(Math.random() * quotesArray.length)];
+            document.getElementById('quote').value = randomQuote;
+        }
+
+        // Event listener para el botón de generar
+        document.getElementById('generateBtn').addEventListener('click', generateQuote);
+    </script>
+
 </body>
+
 </html>
